@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.easylist.viewmodel.ItemViewModel
 import androidx.compose.runtime.getValue //wichtig für by-delegate
-import androidx.compose.foundation.lazy.items //wichtig, wurde nicht als Import angeboten
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,7 +36,7 @@ fun ItemListScreen(viewModel: ItemViewModel){
         )
 
         Button(onClick =  {
-            viewModel.addItem(text)
+            viewModel.addItemToList(text)
             text = ""
 
         }){

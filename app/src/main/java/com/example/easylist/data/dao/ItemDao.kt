@@ -1,4 +1,4 @@
-package com.example.easylist.data
+package com.example.easylist.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.easylist.data.entities.Item
 import kotlinx.coroutines.flow.Flow
+
+
 
 @Dao
 interface ItemDao {
@@ -19,9 +22,9 @@ interface ItemDao {
     @Update
     suspend fun update(item: Item)
 
-    @Query("SELECT * FROM Item")
-    fun getAll(): Flow<List<Item>>  //Datenstrom für Liste
+    @Query("SELECT * FROM items WHERE listId = :listId")
+    fun getItemsForList(listId: Int): Flow<List<Item>> //Items für eine bestimmte Liste
 
-    @Query("DELETE FROM Item")
-    suspend fun deleteList()
+    @Query("UPDATE items SET isClicked = :isClicked WHERE id = :itemId")
+    suspend fun updateItemClickStatus(itemId: Int, isClicked: Boolean)
 }
