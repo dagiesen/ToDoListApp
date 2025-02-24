@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.example.easylist.data.AppDatabase
+import com.example.easylist.data.database.AppDatabase
 import com.example.easylist.viewmodel.ItemViewModel
 import com.example.easylist.viewmodel.ItemViewModelFactory
 

@@ -22,9 +22,9 @@ interface ItemDao {
     @Update
     suspend fun update(item: Item)
 
-    @Query("SELECT * FROM items WHERE listId = :listId")
+    @Query("SELECT * FROM Item WHERE listId = :listId")
     fun getItemsForList(listId: Int): Flow<List<Item>> //Items für eine bestimmte Liste
 
-    @Query("UPDATE items SET isClicked = :isClicked WHERE id = :itemId")
+    @Query("UPDATE Item SET isClickedItem = :isClicked WHERE id = :itemId")
     suspend fun updateItemClickStatus(itemId: Int, isClicked: Boolean)
 }

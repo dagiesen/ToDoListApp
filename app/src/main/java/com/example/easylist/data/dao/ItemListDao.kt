@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 import com.example.easylist.data.entities.ItemList
@@ -12,12 +13,20 @@ import com.example.easylist.data.entities.ItemList
 interface ItemListDao {
 
     @Insert
-    suspend fun insert(itemList: ItemList)
+    suspend fun insertItemList(itemList: ItemList)
 
     @Delete
-    suspend fun delete(itemList: ItemList)
+    suspend fun deleteItemList(itemList: ItemList)
 
-    @Query("SELECT * FROM item_lists")
+    @Update
+    suspend fun updateItemList(itemList: ItemList)
+
+
+    //Alle Listen abrufen
+    @Query("SELECT * FROM ItemList")
     fun getAllItemLists(): Flow<List<ItemList>>
+
+    @Query("SELECT * FROM ItemList WHERE id = :id")
+    suspend fun getItemListById(id: Long): ItemList?
 
 }

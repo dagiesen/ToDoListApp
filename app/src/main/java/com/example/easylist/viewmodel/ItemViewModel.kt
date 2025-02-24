@@ -35,13 +35,13 @@ class ItemViewModel(database: AppDatabase) : ViewModel() {
 
     fun toggleItemClicked(item: Item) {
         viewModelScope.launch {
-            itemDao.updateItemClickStatus(item.id, !item.isClicked)
+            itemDao.updateItemClickStatus(item.id, !item.isClickedItem)
         }
     }
 
     fun addItemList(name: String){
         viewModelScope.launch{
-            itemListDao.insert(ItemList(name = name))
+            itemListDao.insertItemList(ItemList(name = name))
         }
     }
 
