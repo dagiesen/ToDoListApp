@@ -29,4 +29,11 @@ interface ItemListDao {
     @Query("SELECT * FROM ItemList WHERE id = :id")
     suspend fun getItemListById(id: Long): ItemList?
 
+    //angeklickte Listen aktualisieren
+    @Query("UPDATE ItemList SET isClickedList =:isClickedList WHERE id = :id")
+    suspend fun updateListClickStatus(id: Int, isClickedList: Boolean)
+
+    //angeklickte Listen löschen
+    @Query("DELETE FROM ItemList WHERE isClickedList = 1")
+    suspend fun deleteClickedItemLists()
 }

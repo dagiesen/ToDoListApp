@@ -18,7 +18,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.easylist.data.entities.ItemList
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [Item::class, ItemList::class])
 abstract class AppDatabase : RoomDatabase() {
 
