@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -58,9 +59,11 @@ class ItemViewModel(database: AppDatabase) : ViewModel() {
     }
 
 
-    fun getItemListById(id: Long){
-        viewModelScope.launch{
-            itemDao.getItemsForList(id.toInt())
+
+    fun getItemListById(id: Long): Flow<String?> {
+        return flow {
+            val itemList = itemListDao.getItemListById(id)
+            emit(itemList?.name)
         }
 
     }
@@ -74,6 +77,13 @@ class ItemViewModel(database: AppDatabase) : ViewModel() {
     fun deleteClickedItemLists(){
         viewModelScope.launch{
             itemListDao.deleteClickedItemLists()
+        }
+    }
+
+
+    fun deleteClickedItem(){
+        viewModelScope.launch{
+            itemDao.deleteClickedItem()
         }
     }
 

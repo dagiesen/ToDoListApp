@@ -1,10 +1,22 @@
 package com.example.easylist
+import android.R.style
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -21,7 +33,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.easylist.viewmodel.ItemViewModel
 
@@ -36,6 +54,7 @@ fun DetailsScreen(
     viewModel.selectList(itemListId.toInt())
     var showDialog by remember {mutableStateOf(false)}
     val itemsInList by viewModel.itemsForSelectedList.collectAsState()
+    val itemListName by viewModel.getItemListById(itemListId).collectAsState(initial = "Unbekannt")
    // val itemsInList by viewModel.getItemListById(itemListId).collectAsState()
     var listItem by remember { mutableStateOf("") }
 
@@ -81,12 +100,31 @@ fun DetailsScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Text("Die Liste hat die Id $itemListId",
+                    Text("$itemListName",
                         style = MaterialTheme.typography.titleLarge)
                 }
             )
         },
         bottomBar = {
+            BottomAppBar(
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
+
+                ){
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Button(
+                        onClick = {viewModel.deleteClickedItem()}
+                    ){
+                        Text("Ausgewählte Löschen")
+                    }
+
+                }
+
+            }
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {showDialog = true}) {
@@ -98,34 +136,35 @@ fun DetailsScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             items(itemsInList){ item ->
-                Text(
-                    text = item.name
-                )
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    modifier = Modifier
-//                        .padding(8.dp)
-//                        .fillMaxWidth()
-//
-//                ){
-//                    Checkbox(
-//                        checked = listItem.isClickedList,
-//                        onCheckedChange = {
-//                                isChecked -> viewModel.toggleItemListClicked(listItem)
-//                        },
-//                        //        modifier = Modifier.padding(8.dp)
-//                    )
-//                    Text(
-//                        text = listItem.name,
-//                        modifier = Modifier
-//                            .padding(8.dp)
-//                            .selectable(selected = false,
-//                                onClick = {navController.navigate("details/${listItem.id}")})
-//
-//
-//
-//                    )
-//                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth()
+                        //.clip(RoundedCornerShape(8.dp))
+                        .border(BorderStroke(1.dp, Color.LightGray))
+                ){
+                    Checkbox(
+                        checked = item.isClickedItem,
+                        onCheckedChange = {
+                            isChecked -> viewModel.toggleItemClicked(item)
+                        }
+                    )
+                    Text(
+                        text = item.name,
+                        style = TextStyle(
+                            textDecoration = if (item.isClickedItem) TextDecoration.LineThrough
+                            else TextDecoration.None
+                        ),
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .selectable(selected = false,
+                                onClick = {viewModel.toggleItemClicked(item)})
+                    )
+
+
+                }
+
 
             }
 
@@ -138,40 +177,4 @@ fun DetailsScreen(
 
 
 }
-
-//@Composable
-//fun DetailsScreen(
-//    viewModel: ItemViewModel,
-//    navController: NavController,
-//    itemListId: Long
-//){
-//    val item by viewModel.getItemsForList(itemListId.toInt()).collectAsState("")
-//    var text by remember { mutableStateOf("") }
-//
-//
-//
-//
-//    Column(modifier = Modifier) {
-//        OutlinedTextField(
-//            value = text,
-//            onValueChange = { text = it},
-//            label = { Text("Eingabe")}
-//        )
-//        Button (onClick = {
-//            viewModel.addItemToList(text, itemListId.toInt())
-//            text = ""
-//        }){
-//            Text("Hinzufügen")
-//        }
-//
-//        LazyColumn {
-//            items(listOf("Item 1", "Item 2", "Item 3")) { item ->
-//                Text(text = item)
-//
-//            }
-//        }
-//
-//
-//
-//    }}
 

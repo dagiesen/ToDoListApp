@@ -27,4 +27,7 @@ interface ItemDao {
 
     @Query("UPDATE Item SET isClickedItem = :isClicked WHERE id = :itemId")
     suspend fun updateItemClickStatus(itemId: Int, isClicked: Boolean)
+
+    @Query("DELETE FROM Item WHERE isClickedItem = 1")
+    suspend fun deleteClickedItem()
 }

@@ -1,5 +1,7 @@
 package com.example.easylist
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Row
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -34,6 +37,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -135,8 +140,10 @@ fun ScaffoldSurface(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(4.dp)
                         .fillMaxWidth()
+                     //   .clip(RoundedCornerShape(8.dp))
+                        .border(BorderStroke(1.dp, Color.LightGray))
 
                 ){
                     Checkbox(
