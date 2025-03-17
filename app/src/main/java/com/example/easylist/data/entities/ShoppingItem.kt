@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Item(
+data class ShoppingItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,

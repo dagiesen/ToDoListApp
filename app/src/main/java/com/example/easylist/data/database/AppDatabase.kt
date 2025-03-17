@@ -1,35 +1,29 @@
 package com.example.easylist.data.database
 
 
-import com.example.easylist.data.dao.ItemDao
-import com.example.easylist.data.dao.ItemListDao
-import com.example.easylist.data.entities.Item
-
-
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
-import androidx.room.RenameTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.AutoMigrationSpec
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.easylist.data.entities.ItemList
+import com.example.easylist.data.dao.ShoppingItemDao
+import com.example.easylist.data.dao.ShoppingListDao
+import com.example.easylist.data.entities.ShoppingItem
+import com.example.easylist.data.entities.ShoppingList
 
 @Database(
-    version = 2,
-    entities = [Item::class, ItemList::class])
+    version = 6,
+    entities = [ShoppingItem::class, ShoppingList::class]
+)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun itemDao(): ItemDao
-    abstract fun itemListDao(): ItemListDao
+    abstract fun shoppingItemDao(): ShoppingItemDao
+    abstract fun shoppingListDao(): ShoppingListDao
 
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        // Methode, um die Datenbank zu erhalten
+
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
@@ -37,7 +31,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-                    .fallbackToDestructiveMigration() // Löscht die DB bei Versionsänderung
+                    .fallbackToDestructiveMigration()
                     .build().also { INSTANCE = it }
             }
         }

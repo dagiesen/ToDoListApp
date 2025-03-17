@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -31,13 +30,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import com.example.easylist.viewmodel.ItemViewModel
+import com.example.easylist.viewmodel.EasyListViewModel
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -45,12 +41,12 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaffoldSurface(
-    viewModel : ItemViewModel,
+    viewModel : EasyListViewModel,
     navController: NavController
 ){
     var showDialog by remember {mutableStateOf(false)}
     var listName by remember {mutableStateOf("")}
-    val lists by viewModel.itemLists.collectAsState()
+    val lists by viewModel.shoppingLists.collectAsState()
 
     if(showDialog){
         AlertDialog(
@@ -66,7 +62,7 @@ fun ScaffoldSurface(
                 TextButton(onClick = {
                     showDialog = false
                     if (listName.isNotBlank()){
-                        viewModel.addItemList(listName)
+                        viewModel.addShoppingList(listName)
                         listName = ""
                     }
                 }) {
@@ -116,7 +112,7 @@ fun ScaffoldSurface(
                     horizontalArrangement = Arrangement.Center
                 ){
                     Button(
-                        onClick = {viewModel.deleteClickedItemLists()}
+                        onClick = {viewModel.deleteClickedShoppingLists()}
                     ){
                         Text("Ausgewählte Einkaufslisten löschen")
                     }
@@ -147,9 +143,9 @@ fun ScaffoldSurface(
 
                 ){
                     Checkbox(
-                        checked = listItem.isClickedList,
+                        checked = listItem.isMarkedList,
                         onCheckedChange = {
-                                isChecked -> viewModel.toggleItemListClicked(listItem)
+                                isChecked -> viewModel.toggleShoppingListClicked(listItem)
                         },
                         //        modifier = Modifier.padding(8.dp)
                     )

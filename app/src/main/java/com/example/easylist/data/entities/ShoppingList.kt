@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class ItemList(
+data class ShoppingList(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val isClickedList: Boolean = false
+    val isMarkedList: Boolean = false
 )

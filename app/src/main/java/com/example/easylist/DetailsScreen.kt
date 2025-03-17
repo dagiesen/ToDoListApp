@@ -1,16 +1,13 @@
 package com.example.easylist
-import android.R.style
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
@@ -35,26 +32,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.easylist.viewmodel.ItemViewModel
+import com.example.easylist.viewmodel.EasyListViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    viewModel: ItemViewModel,
+    viewModel: EasyListViewModel,
     navController: NavController,
     itemListId: Long
 ){
     viewModel.selectList(itemListId.toInt())
     var showDialog by remember {mutableStateOf(false)}
     val itemsInList by viewModel.itemsForSelectedList.collectAsState()
-    val itemListName by viewModel.getItemListById(itemListId).collectAsState(initial = "Unbekannt")
+    val itemListName by viewModel.getShoppingListById(itemListId).collectAsState(initial = "Unbekannt")
    // val itemsInList by viewModel.getItemListById(itemListId).collectAsState()
     var listItem by remember { mutableStateOf("") }
 
@@ -72,7 +68,7 @@ fun DetailsScreen(
                 TextButton(onClick = {
                     showDialog = false
                     if (listItem.isNotBlank()){
-                        viewModel.addItemToList(listItem, itemListId.toInt())
+                        viewModel.addShoppingItem(listItem, itemListId.toInt())
                         listItem = ""
                     }
                 }) {
@@ -117,7 +113,7 @@ fun DetailsScreen(
                     horizontalArrangement = Arrangement.Center
                 ){
                     Button(
-                        onClick = {viewModel.deleteClickedItem()}
+                        onClick = {viewModel.deleteClickedShoppingItem()}
                     ){
                         Text("Ausgewählte Löschen")
                     }
